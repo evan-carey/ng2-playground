@@ -11,7 +11,7 @@ const HMR = helpers.hasProcessFlag("hot");
 const METADATA = {
     title: "Evan Carey",
     baseUrl: "/",
-    isDevServer: helpers.isWebpackDevServers()
+    isDevServer: helpers.isWebpackDevServer()
 };
 
 module.exports = function (options) {
@@ -20,8 +20,9 @@ module.exports = function (options) {
     return {
 
         entry: {
-            "main": "./src/main.ts",
-            "vendor": "./src/vendor.ts"
+            "polyfills": "./src/polyfills.ts",
+            "vendor": "./src/vendor.ts",
+            "app": "./src/app.ts",
         },
 
         resolve: {
@@ -30,7 +31,31 @@ module.exports = function (options) {
         },
 
         module: {
-        
+            rules: [
+
+                /**
+                 * TypeScript
+                 */
+                {
+                    test: /\.ts$/,
+                    use: [
+                        'awesome-typescript-loader',
+                        'angular2-template-loader',
+                        'angular2-router-loader'
+                    ],
+                    exclude: [/\.(spec|e2e)\.ts$/]
+                },
+
+                /**
+                 * JSON
+                 */
+                {
+                    test: /\.json$/,
+                    use: 'json-loader'
+                },
+
+
+            ]
         }
 
 
